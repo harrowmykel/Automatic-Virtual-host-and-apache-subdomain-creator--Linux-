@@ -5,9 +5,14 @@ This program tries to automatically generate virtual host data for you and creat
 
 It can be used for generating subdomains too.
 
-to use this file, run 
+to use this file,  run 
 
 ```shell
+
+# go to the directory where it is saved
+cd /home/path/to/directory
+
+#run program
 sudo bash ./new-vhost.sh [sitename.domain]
 ```
 
