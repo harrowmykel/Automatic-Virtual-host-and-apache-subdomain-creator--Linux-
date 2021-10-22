@@ -3,8 +3,8 @@
 # to use this file, run 
 # sudo bash ~/vhost/new-vhost.sh [sitename.domain]
 # e.g
-# sudo bash ~/vhost/new-vhost.sh aalchat.duckdns.org
-# then visit aalchat.duckdns.org in your browser
+# sudo bash ~/vhost/new-vhost.sh test.org
+# then visit test.org in your browser
 
 
 # create directory /var/www/sitename.domain
