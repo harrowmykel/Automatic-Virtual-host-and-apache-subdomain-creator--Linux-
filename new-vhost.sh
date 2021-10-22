@@ -62,6 +62,9 @@ systemctl restart apache2
 chmod -R 755 /var/www/$1
 
 
+#set file ownership to apache group again
+# so that php can write in folder
+chown -R www-data:www-data /var/www/$1
 
 # ---------Optional commands-------
 #1 on next line is used to confirm
