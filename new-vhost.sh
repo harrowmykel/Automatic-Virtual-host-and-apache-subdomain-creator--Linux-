@@ -1,13 +1,24 @@
 #!/bin/bash
 
 # to use this file, run 
-# sudo bash ~/vhost/new-vhost.sh [site_name]
+# sudo bash ~/vhost/new-vhost.sh [sitename.domain]
 # e.g
 # sudo bash ~/vhost/new-vhost.sh aalchat.duckdns.org
+# then visit aalchat.duckdns.org in your browser
 
+
+# create directory /var/www/sitename.domain
 mkdir -p /var/www/$1
-sudo chown -R $USER:$USER /var/www/$1
 
+#add user to apache group
+sudo usermod -a -G www-data $USER
+
+#set file ownership to apache group
+# so that php can write in folder
+sudo chown -R www-data:www-data /var/www/$1
+
+
+# create file /var/www/sitename.domain/index.html
 cat > /var/www/$1/index.html <<EOF
 <html>
   <head>
@@ -20,7 +31,9 @@ cat > /var/www/$1/index.html <<EOF
 EOF
 
 
-cat > /etc/apache2/sites-available/$1.conf <<EOF
+# create apache virtual host in 
+# /etc/apache2/sites-available/sitename.domain.conf
+sudo cat > /etc/apache2/sites-available/$1.conf <<EOF
 <VirtualHost *:80>
     ServerAdmin admin@$1
     ServerName $1
@@ -39,11 +52,22 @@ cat > /etc/apache2/sites-available/$1.conf <<EOF
 EOF
 
 
+# activate new apache virtual host
 sudo a2ensite $1.conf
+
+# restart apache server
 sudo systemctl restart apache2
 
-
+# set file permissions
 sudo chmod -R 755 /var/www/$1
 
+
+
+# ---------Optional commands-------
+#1 on next line is used to confirm
+#certbot recreating ssl for the new domain if
+#it already exists
+
+# generate ssl certificate with certbot (https)
 sudo certbot --apache -d $1
 1
