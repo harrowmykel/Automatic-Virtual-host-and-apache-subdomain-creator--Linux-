@@ -14,12 +14,8 @@ cd /home/path/to/directory
 
 #run program
 sudo bash ./new-vhost.sh [sitename.domain]
-```
-
 # e.g
-
-```shell
-sudo bash ./new-vhost.sh aalchat.duckdns.org
+# sudo bash ./new-vhost.sh test.org
 ```
 
 then visit 'sitename.domain' in your browser
