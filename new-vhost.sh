@@ -11,11 +11,11 @@
 mkdir -p /var/www/$1
 
 #add user to apache group
-sudo usermod -a -G www-data $USER
+usermod -a -G www-data $USER
 
 #set file ownership to apache group
 # so that php can write in folder
-sudo chown -R www-data:www-data /var/www/$1
+chown -R www-data:www-data /var/www/$1
 
 
 # create file /var/www/sitename.domain/index.html
@@ -33,7 +33,7 @@ EOF
 
 # create apache virtual host in 
 # /etc/apache2/sites-available/sitename.domain.conf
-sudo cat > /etc/apache2/sites-available/$1.conf <<EOF
+cat > /etc/apache2/sites-available/$1.conf <<EOF
 <VirtualHost *:80>
     ServerAdmin admin@$1
     ServerName $1
@@ -53,13 +53,13 @@ EOF
 
 
 # activate new apache virtual host
-sudo a2ensite $1.conf
+a2ensite $1.conf
 
 # restart apache server
-sudo systemctl restart apache2
+systemctl restart apache2
 
 # set file permissions
-sudo chmod -R 755 /var/www/$1
+chmod -R 755 /var/www/$1
 
 
 
@@ -69,5 +69,5 @@ sudo chmod -R 755 /var/www/$1
 #it already exists
 
 # generate ssl certificate with certbot (https)
-sudo certbot --apache -d $1
+certbot --apache -d $1
 1
