@@ -9,6 +9,7 @@
 
 # create directory /var/www/sitename.domain
 mkdir -p /var/www/$1
+mkdir -p /var/www/$1/public_html
 
 #add user to apache group
 usermod -a -G www-data $USER
@@ -19,7 +20,7 @@ chown -R www-data:www-data /var/www/$1
 
 
 # create file /var/www/sitename.domain/index.html
-cat > /var/www/$1/index.html <<EOF
+cat > /var/www/$1/public_html/index.html <<EOF
 <html>
   <head>
     <title>Welcome to $1!</title>
@@ -38,11 +39,11 @@ cat > /etc/apache2/sites-available/$1.conf <<EOF
     ServerAdmin admin@$1
     ServerName $1
     ServerAlias www.$1
-    DocumentRoot /var/www/$1
+    DocumentRoot /var/www/$1/public_html
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
     
-    <Directory /var/www/$1>
+    <Directory /var/www/$1/public_html>
         Options -Indexes
         AllowOverride All
         Order allow,deny
@@ -59,12 +60,15 @@ a2ensite $1.conf
 systemctl restart apache2
 
 # set file permissions
-chmod -R 755 /var/www/$1
+chmod -R 0755 /var/www/$1/public_html
 
 
 #set file ownership to apache group again
 # so that php can write in folder
 chown -R www-data:www-data /var/www/$1
+
+# set file permissions
+chmod -R 0777 /var/www/$1/public_html
 
 # ---------Optional commands-------
 #1 on next line is used to confirm
