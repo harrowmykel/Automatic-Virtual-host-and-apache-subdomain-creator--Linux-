@@ -40,9 +40,9 @@ cat > /etc/apache2/sites-available/$1.conf <<EOF
     ServerName $1
     ServerAlias www.$1
     DocumentRoot /var/www/$1/public_html
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-    
+    ErrorLog /var/www/$1/error.log
+    CustomLog /var/www/$1/access.log combined
+
     <Directory /var/www/$1/public_html>
         Options -Indexes
         AllowOverride All
