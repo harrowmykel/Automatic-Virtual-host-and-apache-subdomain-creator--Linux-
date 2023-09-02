@@ -25,3 +25,13 @@ then visit 'sitename.domain' in your browser
 NB:
 sudo is required to restart apache server
 and create a new virtual host file
+
+## for local sites
+
+```sh
+sudo nano /etc/hosts
+```
+```sh
+127.0.0.1 localhost test.domain
+
+```
