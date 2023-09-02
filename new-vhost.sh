@@ -10,17 +10,18 @@
 # create directory /var/www/sitename.domain
 mkdir -p /var/www/$1
 mkdir -p /var/www/$1/public_html
+mkdir -p /var/www/$1/public_html/public
 
 #add user to apache group
 usermod -a -G www-data $USER
 
 #set file ownership to apache group
 # so that php can write in folder
-chown -R www-data:www-data /var/www/$1
+chown -R www-data:www-data /var/www/$1/public_html
 
 
-# create file /var/www/sitename.domain/index.html
-cat > /var/www/$1/public_html/index.html <<EOF
+# create file /var/www/sitename.domain/public/index.html
+cat > /var/www/$1/public_html/public/index.html <<EOF
 <html>
   <head>
     <title>Welcome to $1!</title>
@@ -32,6 +33,12 @@ cat > /var/www/$1/public_html/index.html <<EOF
 EOF
 
 
+# create file file
+cat > /var/www/$1/public_html/put_git_here.txt <<EOF
+put .git here and not in public folder!
+EOF
+
+
 # create apache virtual host in 
 # /etc/apache2/sites-available/sitename.domain.conf
 cat > /etc/apache2/sites-available/$1.conf <<EOF
@@ -39,11 +46,11 @@ cat > /etc/apache2/sites-available/$1.conf <<EOF
     ServerAdmin admin@$1
     ServerName $1
     ServerAlias www.$1
-    DocumentRoot /var/www/$1/public_html
+    DocumentRoot /var/www/$1/public_html/public
     ErrorLog /var/www/$1/error.log
     CustomLog /var/www/$1/access.log combined
 
-    <Directory /var/www/$1/public_html>
+    <Directory /var/www/$1/public_html/public>
         Options -Indexes
         AllowOverride All
         Order allow,deny
@@ -60,15 +67,15 @@ a2ensite $1.conf
 systemctl restart apache2
 
 # set file permissions
-chmod -R 0755 /var/www/$1/public_html
+chmod -R 0755 /var/www/$1/public_html/public
 
 
 #set file ownership to apache group again
 # so that php can write in folder
-chown -R www-data:www-data /var/www/$1
+chown -R www-data:www-data /var/www/$1/public_html
 
 # set file permissions
-chmod -R 0777 /var/www/$1/public_html
+chmod -R 0777 /var/www/$1/public_html/public
 
 # ---------Optional commands-------
 #1 on next line is used to confirm
